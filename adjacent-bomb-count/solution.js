@@ -39,6 +39,7 @@
 
 function countAdjacentBombs(grid) {
   // Your code here
+  here is my code
 }
 
 module.exports = countAdjacentBombs;
