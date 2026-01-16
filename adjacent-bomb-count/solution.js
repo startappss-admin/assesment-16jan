@@ -38,7 +38,40 @@
  */
 
 function countAdjacentBombs(grid) {
-  // Your code here
+  let rows = grid.length;
+  let cols = grid[0].length;
+
+  const result = grid.map((row) => [...row]); //used this from test.js file for help
+
+  //All 8 directions
+  const dx = [0, 1, 0, -1, 1, -1, -1, 1];
+  const dy = [-1, 0, 1, 0, 1, 1, -1, -1];
+
+  function checkAndCountBombs(i, j, dx, dy){
+      let count = 0;
+      for(let z = 0; z<dx.length; z++){
+        let newX = i+dx[z];
+        let newY = j+dy[z];
+        if((newX >=0 && newX < rows)&& (newY >=0 && newY < cols) &&(grid[newX][newY] === "X")){
+          count++;
+        }
+      }
+      // console.log(i +", " +j+ " = "+count); //used for debugging
+      return count;
+  }
+
+  for(let i = 0; i<rows; i++){
+    for(let j = 0; j<cols; j++){
+      if(grid[i][j] === "."){
+        let totalAdjacentBombs = checkAndCountBombs(i, j, dx, dy);
+        result[i][j] = totalAdjacentBombs;
+      }
+      else{
+        result[i][j] = grid[i][j];
+      }
+    }
+  }
+  return result;
 }
 
 module.exports = countAdjacentBombs;
