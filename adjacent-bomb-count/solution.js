@@ -36,9 +36,45 @@
  * @param {string[][]} grid - The input 3x3 grid with 'X' (bombs) and '.' (empty)
  * @return {(string|number)[][]} - 3x3 grid with counts
  */
-
+/**
+ * 
+```
+X 2 1
+1 2 X
+0 1 1
+```
+ */
 function countAdjacentBombs(grid) {
   // Your code here
+  let n = 3;
+  let res = [];
+  for(let i = 0; i < n; i++){
+    let tempRes = [];
+    for(let j = 0; j < n; j++){
+      let count = 0;
+      if(grid[i][j] === '.'){
+        if(j > 0 && grid[i][j - 1] === 'X') count++;
+        if(i > 0 && grid[i - 1][j] === 'X') count++;
+        if(j < n - 1 && grid[i][j + 1] === 'X') count++;
+        if(i < n - 1 && grid[i + 1][j] === 'X') count++;
+
+        if (i > 0 && j > 0 && grid[i - 1][j - 1] === 'X') count++;
+        if (i > 0 && j < n - 1 && grid[i - 1][j + 1] === 'X') count++;
+        if (i < n - 1 && j > 0 && grid[i + 1][j - 1] === 'X') count++;
+        if (i < n - 1 && j < n - 1 && grid[i + 1][j + 1] === 'X') count++;
+
+        tempRes.push(count);
+      }
+
+      else{
+        tempRes.push('X');
+      }
+    }
+
+    res.push(tempRes);
+  }
+
+  return res;
 }
 
 module.exports = countAdjacentBombs;
