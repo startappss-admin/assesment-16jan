@@ -1,5 +1,7 @@
 import React from "react";
 import "./Chessboard.css";
+import One_cell from "./One_cell";
+import { useState } from "react";
 
 /**
  * PROBLEM: Interactive Chessboard with Performance Optimization
@@ -55,16 +57,44 @@ import "./Chessboard.css";
  */
 
 const Chessboard = () => {
-  // Your implementation here
+  // Your implementation here 
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
-  return (
-    <div className="chessboard-container">
-      <h2>Interactive Chessboard</h2>
-      <div className="chessboard" data-testid="chessboard">
-        {/* Your chessboard implementation */}
-      </div>
+  const handleBoardClick = (e) => {
+    const index = e.target.id;
+
+    // if click outside a cell
+    if (index === undefined) return;
+
+    setSelectedIndex(Number(index));
+  };
+return (
+  <div className="chessboard-container">
+    <h2>Interactive Chessboard</h2>
+    <div
+      className="chessboard"
+      data-testid="chessboard"
+      onClick={handleBoardClick}
+    >
+      {(() => {
+        const cells = [];
+
+        for (let index = 0; index < 64; index++) {
+          cells.push(
+            <One_cell
+              key={index}
+              index={index}
+              isSelected={index === selectedIndex}
+            />
+          );
+        }
+
+        return cells;
+      })()}
     </div>
-  );
+  </div>
+);
+
 };
 
 export default Chessboard;
