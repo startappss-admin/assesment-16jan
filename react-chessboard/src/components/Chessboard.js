@@ -1,6 +1,9 @@
 import React from "react";
 import "./Chessboard.css";
-
+import { useState } from "react";
+import { useCallback } from "react";
+import { useMemo } from "react";
+import Cell from "./Cell.js"
 /**
  * PROBLEM: Interactive Chessboard with Performance Optimization
  *
@@ -54,17 +57,64 @@ import "./Chessboard.css";
  * @returns {JSX.Element} Chessboard component
  */
 
-const Chessboard = () => {
-  // Your implementation here
+const Chessboard = ({rows=8,cols=8}) => {
+  // Your implementation here 
+  /* state to track highlighted cell */
+  const [highlighted, setHighlighted] = useState(null);
 
+  /* click handler(event delegation) */
+  const handleClick = useCallback((e) => {
+    const button = e.target.closest("button");
+    if (!button) return;
+
+    const row = Number(button.dataset.row);
+    const col = Number(button.dataset.col);
+
+    setHighlighted({ row, col });
+  }, []);
+
+  /*  memoized board generation */
+  const board = useMemo(() => {
+    const cells = [];
+
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        cells.push(
+          <Cell
+            key={`${row}-${col}`}
+            row={row}
+            col={col}
+            isHighlighted={
+              highlighted?.row === row && highlighted?.col === col
+            }
+          />
+        );
+      }
+    }
+
+    return cells;
+  }, [rows, cols, highlighted]);
   return (
     <div className="chessboard-container">
       <h2>Interactive Chessboard</h2>
-      <div className="chessboard" data-testid="chessboard">
+      <div className="chessboard" data-testid="chessboard"  onClick={handleClick}
+ >
         {/* Your chessboard implementation */}
-      </div>
+        {/* ONLY ONE click handler */}
+      
+      
+        {board}
+    
     </div>
+        
+      </div>
+
   );
 };
 
 export default Chessboard;
+
+
+
+
+  

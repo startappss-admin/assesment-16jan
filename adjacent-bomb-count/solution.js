@@ -38,7 +38,50 @@
  */
 
 function countAdjacentBombs(grid) {
+  
   // Your code here
+
+  // create empty result grid
+  let result = [];
+
+  // loop through rows
+  for (let i = 0; i < 3; i++) {
+    result[i] = [];
+
+    // loop through columns
+    for (let j = 0; j < 3; j++) {
+
+      // if current cell is bomb, copy it
+      if (grid[i][j] === 'X') {
+        result[i][j] = 'X';
+        continue;
+      }
+      /*count for bombs*/
+      let count = 0;
+
+      // check all adjacent cells
+      for (let x = i - 1; x <= i + 1; x++) {
+        for (let y = j - 1; y <= j + 1; y++) {
+
+          // check grid boundary
+          if (x >= 0 && x < 3 && y >= 0 && y < 3) {
+            if (grid[x][y] === 'X') {
+              count++;
+            }
+          }
+
+        }
+      }
+
+      result[i][j] = count;
+    }
+  }
+
+  return result;
 }
+
+
+
+
 
 module.exports = countAdjacentBombs;
