@@ -1,0 +1,10 @@
+.main-div{
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    width: 80vw;
+    height: 80vh;
+}
+button{
+    border: 1px solid black;
+}

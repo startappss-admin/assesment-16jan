@@ -1,5 +1,7 @@
 import React from "react";
 import "./Chessboard.css";
+import Child from "./Child";
+import { useState, useMemo } from "react";
 
 /**
  * PROBLEM: Interactive Chessboard with Performance Optimization
@@ -55,13 +57,36 @@ import "./Chessboard.css";
  */
 
 const Chessboard = () => {
-  // Your implementation here
+  // const [highlighted, setHighlighted] = useState(false);
+  const [target, setTarget] = useState(null);
+  function handleColor(e){
+    const targett=e.target;
+    if(target){
+      target.classList.remove("highlighted");
+    }
+    targett.classList.add("highlighted");
+    setTarget(targett);
+    // highlighted=true;
+  }
+  
+  const buttons = useMemo(() => {
+    const btns = [];
+    for(let i=0; i<8; i++) {
+      for(let j=0; j<8; j++) {
+        const isWhite=(i+j)%2===0;
+        const className=isWhite?"cell white":"cell grey";
+        btns.push(<button key={`${i}-${j}`} className={className}></button>);
+      }
+    }
+    return btns;
+  }, []); 
+
 
   return (
     <div className="chessboard-container">
       <h2>Interactive Chessboard</h2>
-      <div className="chessboard" data-testid="chessboard">
-        {/* Your chessboard implementation */}
+      <div className="chessboard" data-testid="chessboard" onClick={(e)=>handleColor(e)}>
+        {buttons}
       </div>
     </div>
   );
