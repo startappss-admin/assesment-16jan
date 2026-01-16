@@ -37,8 +37,69 @@
  * @return {(string|number)[][]} - 3x3 grid with counts
  */
 
+
+
+//    directions = [
+//     [-1,-1], [-1,0], [-1,1],
+//     [0,-1],  [0,0], [0,1],
+//     [1,-1], [1,0], [1,1]
+//   ];
+
 function countAdjacentBombs(grid) {
-  // Your code here
+
+  let result = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0]
+  ];
+  for (let row = 0; row < 3; row++) {
+    for (let col = 0; col < 3; col++) {
+      if (grid[row][col] == 'X') {
+        result[row][col] = 'X';
+      } 
+      else{
+        let count = 0; 
+        if (row - 1 >= 0 && col - 1 >= 0) {
+          if (grid[row-1][col-1] == 'X') 
+            count++;
+        }
+        if (row-1 >= 0) {
+          if (grid[row- 1][col] == 'X') 
+            count++;
+        }
+        if (row-1 >= 0 && col + 1 < 3) {
+          if (grid[row - 1][col + 1] == 'X') 
+            count++;
+        }
+        if (col-1 >= 0) {
+          if (grid[row][col - 1] == 'X') 
+            count++;
+        }
+        if (col + 1 < 3) {
+          if (grid[row][col + 1] == 'X') 
+            count++;
+        }
+        if (row + 1 < 3 && col - 1 >= 0) {
+          if (grid[row + 1][col - 1] == 'X') 
+            count++;
+        }
+        if (row + 1 < 3) {
+          if (grid[row + 1][col] == 'X') 
+            count++;
+        }
+        if (row + 1 < 3 && col + 1 < 3) {
+          if (grid[row + 1][col + 1] == 'X') 
+            count++;
+        }
+
+        result[row][col] = count;
+        
+      }
+    }
+  }
+
+  return result;
 }
 
 module.exports = countAdjacentBombs;
+

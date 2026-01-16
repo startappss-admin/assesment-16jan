@@ -54,17 +54,68 @@ import "./Chessboard.css";
  * @returns {JSX.Element} Chessboard component
  */
 
-const Chessboard = () => {
-  // Your implementation here
 
+
+function Chessboard() {
+
+  const [selectedCell, setSelectedCell] = React.useState(null);
+
+  let cells = [];
+  const handleClick = (event) => {
+
+    const row = event.target.dataset.row;
+    const col = event.target.dataset.col;
+
+    if (row !== undefined && col !== undefined) {
+      setSelectedCell({
+        row: Number(row),
+        col: Number(col)
+      });
+    }
+  };
+
+
+  for (let row = 0; row < 8; row++) {
+    for (let col = 0; col < 8; col++) {
+
+      const isWhite = (row + col) % 2 === 0;
+
+      const isHighlighted =
+        selectedCell &&
+        selectedCell.row === row &&
+        selectedCell.col === col;
+
+      cells.push(
+        <button
+          key={row + "-" + col}
+          data-row={row}
+          data-col={col}
+          className={
+            "cell " +
+            (isWhite ? "white" : "grey") +
+            (isHighlighted ? " highlighted" : "")
+          }
+        >
+        </button>
+      );
+    }
+  }
   return (
     <div className="chessboard-container">
       <h2>Interactive Chessboard</h2>
-      <div className="chessboard" data-testid="chessboard">
-        {/* Your chessboard implementation */}
+
+      <div
+        className="chessboard"
+        data-testid="chessboard"
+        onClick={handleClick}
+      >
+        {cells}
       </div>
+
     </div>
   );
-};
+}
 
 export default Chessboard;
+
+
