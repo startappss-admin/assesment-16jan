@@ -51,9 +51,16 @@
 .cell.grey {
   background-color: #b58863;
 }
-
+/* .cell.selected{
+  background-color: ;
+} */
 .cell.highlighted {
   background-color: #ff6b6b !important;
+  color: white;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+}
+.highlighted{
+   background-color: #ff6b6b !important;
   color: white;
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
 }
