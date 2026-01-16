@@ -54,14 +54,24 @@ import "./Chessboard.css";
  * @returns {JSX.Element} Chessboard component
  */
 
-
-
-function Chessboard() {
-
+const Cell = React.memo(({ row, col, isWhite, isHighlighted }) => {
+  return (
+    <button
+      data-row={row}
+      data-col={col}
+      className={
+        "cell " +
+        (isWhite ? "white" : "grey") +
+        (isHighlighted ? " highlighted" : "")
+      }
+    ></button>
+  );
+});
+const Chessboard = () => {
   const [selectedCell, setSelectedCell] = React.useState(null);
+  const handleClick = React.useCallback((event) => {
 
-  let cells = [];
-  const handleClick = (event) => {
+    if (event.target.tagName !== "BUTTON") return;
 
     const row = event.target.dataset.row;
     const col = event.target.dataset.col;
@@ -72,50 +82,42 @@ function Chessboard() {
         col: Number(col)
       });
     }
-  };
+  }, []);
 
+  const cells = React.useMemo(() => {
+    const board = [];
+    for (let row = 0; row < 8; row++) {
+      for (let col = 0; col < 8; col++) {
 
-  for (let row = 0; row < 8; row++) {
-    for (let col = 0; col < 8; col++) {
+        const isWhite = (row + col) % 2 === 0;
 
-      const isWhite = (row + col) % 2 === 0;
+        const isHighlighted =
+          selectedCell &&
+          selectedCell.row === row &&
+          selectedCell.col === col;
 
-      const isHighlighted =
-        selectedCell &&
-        selectedCell.row === row &&
-        selectedCell.col === col;
-
-      cells.push(
-        <button
-          key={row + "-" + col}
-          data-row={row}
-          data-col={col}
-          className={
-            "cell " +
-            (isWhite ? "white" : "grey") +
-            (isHighlighted ? " highlighted" : "")
-          }
-        >
-        </button>
-      );
+        board.push(
+          <Cell
+            key={row + "-" + col}
+            row={row}
+            col={col}
+            isWhite={isWhite}
+            isHighlighted={isHighlighted}
+          />
+        );
+      }
     }
-  }
+    return board;
+  }, [selectedCell]);
+
   return (
     <div className="chessboard-container">
       <h2>Interactive Chessboard</h2>
-
-      <div
-        className="chessboard"
-        data-testid="chessboard"
-        onClick={handleClick}
-      >
+      <div className="chessboard" data-testid="chessboard" onClick={handleClick}>
         {cells}
       </div>
-
     </div>
   );
-}
+};
 
 export default Chessboard;
-
-
