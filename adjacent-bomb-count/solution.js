@@ -37,8 +37,54 @@
  * @return {(string|number)[][]} - 3x3 grid with counts
  */
 
+
+
 function countAdjacentBombs(grid) {
-  // Your code here
+
+  let result = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0]
+  ];
+
+  
+  const directions = [
+    [-1, -1], [-1, 0], [-1, 1],
+    [0, -1],  [0, 0], [0, 1],
+    [1, -1],  [1, 0],  [1, 1]
+  ];
+
+  for (let row = 0; row < 3; row++) {
+    for (let col = 0; col < 3; col++) {
+
+      if (grid[row][col] === 'X') {
+        result[row][col] = 'X';
+      } 
+      else {
+        let count = 0;
+        for (let i = 0; i < directions.length; i++) {
+          let newRow = row + directions[i][0];
+          let newCol = col + directions[i][1];
+          if (
+            newRow >= 0 && newRow < 3 &&
+            newCol >= 0 && newCol < 3
+          ) {
+
+            if (grid[newRow][newCol] === 'X') {
+              count++;
+            }
+
+          }
+        }
+
+        result[row][col] = count;
+      }
+    }
+  }
+
+  return result;
 }
 
 module.exports = countAdjacentBombs;
+
+
