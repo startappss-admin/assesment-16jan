@@ -1,6 +1,11 @@
-import React from "react";
+import  { useRef } from "react";
 import "./Chessboard.css";
-
+import { useState } from "react";
+import { useCallback, useMemo } from "react";
+// import button from "./button";
+import ButtonFile from "./ButtonFile";
+import { useEffect } from "react";
+// import implimentChess from "./implimentChess";
 /**
  * PROBLEM: Interactive Chessboard with Performance Optimization
  *
@@ -53,15 +58,55 @@ import "./Chessboard.css";
  *
  * @returns {JSX.Element} Chessboard component
  */
-
+    
 const Chessboard = () => {
-  // Your implementation here
+  
+ 
+  const [newboxes, setBoxes] = useState([]);
+  
+  const targetRef = useRef(null);
+
+  useEffect(() => {
+    const newBoxes = [];
+    let count = 0;
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        const white = (i + j) % 2 === 0;
+        const className = white ? "cell white" : "cell grey";
+        newBoxes.push(
+          <ButtonFile key={count} row={i}  col={j}
+            className={className}
+          />
+        );
+        count++;
+      }
+    }
+    setBoxes(newBoxes);
+  
+  }, []);
+   
+const handleClick = useCallback((event) => {
+    if(targetRef.current){
+      targetRef.current.classList.remove("highlighted");
+    }
+    // console.log("event", event.target)
+     const row = parseInt(event.target.dataset.row);
+     const col = parseInt(event.target.dataset.col);
+     event.target.classList.add("highlighted");
+     targetRef.current =event.target;
+  
+}, []);
+
+
+ 
 
   return (
     <div className="chessboard-container">
       <h2>Interactive Chessboard</h2>
-      <div className="chessboard" data-testid="chessboard">
+      <div className="chessboard" data-testid="chessboard" 
+      onClick={handleClick}>
         {/* Your chessboard implementation */}
+         {newboxes}
       </div>
     </div>
   );
