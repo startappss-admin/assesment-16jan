@@ -101,7 +101,6 @@ const Chessboard = () => {
     <div className="chessboard-container">
       <h2>Interactive Chessboard</h2>
       <div className="chessboard" data-testid="chessboard" onClick={handleClick}>
-        {/* Your chessboard implementation */}
 
         {cells.map(({row, col}) =>{
           const isHighlighted = highlightedCell
