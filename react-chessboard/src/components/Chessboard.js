@@ -1,5 +1,7 @@
 import React from "react";
 import "./Chessboard.css";
+import Cell from "./Cell";
+import {useState, useCallback, useMemo} from "react"
 
 /**
  * PROBLEM: Interactive Chessboard with Performance Optimization
@@ -55,13 +57,67 @@ import "./Chessboard.css";
  */
 
 const Chessboard = () => {
-  // Your implementation here
+  const [highlightedCell, setHighlightedCell] = useState(null);
+
+  // const cells = []; 
+  // for (let row = 0; row < 8; row++) { 
+  //   for (let col = 0; col < 8; col++) { 
+  //     cells.push( 
+  //     <Cell key={`${row}+${col}`} 
+  //     row={row} 
+  //     col={col} 
+  //     isHighlighted = {isHighlighted}
+  //     onclick={(e)=>handleClick(e)} /> ); 
+  //   } 
+  // }
+
+  //OPTIMIZATION using useMemo hook
+  const cells = useMemo(() => {
+    const temp = [];
+    for (let row = 0; row < 8; row++) {
+      for (let col = 0; col < 8; col++) {
+        temp.push({ row, col });
+      }
+    }
+    return temp;
+  }, []);
+
+  const handleClick = useCallback((e)=>{
+    const row = e.target.dataset.row;
+    const col = e.target.dataset.col;
+
+    if(row === undefined || col === undefined){
+      return;
+    }
+    setHighlightedCell({
+      row : Number(row),
+      col: Number(col)
+    })
+  }, []);
+  
+
 
   return (
     <div className="chessboard-container">
       <h2>Interactive Chessboard</h2>
-      <div className="chessboard" data-testid="chessboard">
-        {/* Your chessboard implementation */}
+      <div className="chessboard" data-testid="chessboard" onClick={handleClick}>
+
+        {cells.map(({row, col}) =>{
+          const isHighlighted = highlightedCell
+          && highlightedCell.row === row 
+          && highlightedCell.col === col;
+
+          return (
+            <Cell 
+            key={`${row}+${col}`}
+            row = {row}
+            col = {col}
+            isHighlighted = {isHighlighted}
+            />
+          )
+        })}
+
+        
       </div>
     </div>
   );
