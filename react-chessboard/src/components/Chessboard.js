@@ -1,5 +1,7 @@
 import React from "react";
+import { useCallback, useMemo, useState } from 'react'
 import "./Chessboard.css";
+import  Cell  from './Cell.js'
 
 /**
  * PROBLEM: Interactive Chessboard with Performance Optimization
@@ -57,11 +59,48 @@ import "./Chessboard.css";
 const Chessboard = () => {
   // Your implementation here
 
+  const [highlighted, setHighlighted] = useState(null);
+
+  const cells = useMemo(() => {
+    const board = [];
+    for (let row = 0; row < 8; row++) {
+      for (let col = 0; col < 8; col++) {
+        board.push({ row, col });
+      }
+    }
+    return board;
+  }, []);
+
+  // event deligation
+  const handleBoardClick = useCallback((event) => {
+    const button = event.target.closest("button");
+    if (!button) return;
+
+    const row = parseInt(button.dataset.row, 10);
+    const col = parseInt(button.dataset.col, 10);
+
+    setHighlighted({ row, col });
+  }, []);
+
+
   return (
     <div className="chessboard-container">
       <h2>Interactive Chessboard</h2>
-      <div className="chessboard" data-testid="chessboard">
-        {/* Your chessboard implementation */}
+      <div className="chessboard" data-testid="chessboard" onClick={handleBoardClick}>
+
+        {
+          /* Your chessboard implementation */
+          cells.map(({ row, col }) => (
+            <Cell
+              key={`${row}-${col}`}
+              row={row}
+              col={col}
+              isHighlighted={
+                highlighted?.row === row && highlighted?.col === col
+              }
+            />
+          ))}
+
       </div>
     </div>
   );

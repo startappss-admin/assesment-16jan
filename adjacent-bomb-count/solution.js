@@ -37,8 +37,70 @@
  * @return {(string|number)[][]} - 3x3 grid with counts
  */
 
+
+
+
+
+
+function countBombs(directions, row, col, grid) {
+  let count = 0;
+
+  // Check all 8 directions
+  for (let [dx, dy] of directions) {
+    const newRowIndex = row + dx;
+    const newColIndex = col + dy;
+
+    // Boundary check
+    if (
+      newRowIndex >= 0 &&
+      newRowIndex < 3 &&
+      newColIndex >= 0 &&
+      newColIndex < 3 &&
+      grid[newRowIndex][newColIndex] === 'X'
+    ) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
 function countAdjacentBombs(grid) {
   // Your code here
+  const result = [];
+
+  // 8 possible directions 
+  const directions = [
+    [-1, -1], [-1, 0], [-1, 1],
+    [0, -1], [0, 1],
+    [1, -1], [1, 0], [1, 1],
+  ];
+
+  for (let row = 0; row < 3; row++) {
+    const newRow = []
+
+    for (let col = 0; col < 3; col++) {
+
+      // If current cell is a bomb, keep it as 'X'
+      if (grid[row][col] === 'X') {
+        newRow.push('X');
+      } else {
+
+      // count adjacent bombs
+        newRow.push(countBombs(directions, row, col, grid));
+      }
+    }
+
+    result.push(newRow);
+  }
+
+  return result;
 }
 
 module.exports = countAdjacentBombs;
+
+
+
+
+
+
