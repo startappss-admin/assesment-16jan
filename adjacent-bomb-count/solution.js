@@ -38,7 +38,26 @@
  */
 
 function countAdjacentBombs(grid) {
-  // Your code here
+  for(let i=0;i<3;i++){
+    for(let j=0;j<3;j++){
+      if(grid[i][j]==='.'){
+        let count=0;
+        for(let x=-1;x<=1;x++){
+          for(let y=-1;y<=1;y++){
+            let nr=i+x;
+            let nc=j+y;
+            if(nr>=0 && nr<3 && nc>=0 && nc<3){
+              if(grid[nr][nc]==='X'){
+                count++;
+              }
+            }
+          }
+      }
+        grid[i][j]=count;
+    }
+  }
+}
+  return grid;
 }
 
 module.exports = countAdjacentBombs;
